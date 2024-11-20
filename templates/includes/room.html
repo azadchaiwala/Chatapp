@@ -1,0 +1,56 @@
+
+<html lang="en">
+
+<body>
+    
+    
+    <!-- Dropdown for online users -->
+    <select id="online-users-dropdown">
+        <option value="">Select an online user</option>
+        <!-- Online users will be populated dynamically -->
+    </select>
+
+    <!-- WebSocket script -->
+    <script>
+        const roomName = "example_room";  // Set dynamically
+        const socket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+        );
+
+        // Handle WebSocket messages
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            if (data.message) {
+                console.log("Received message: ", data.message);
+            }
+        };
+
+        socket.onopen = function(e) {
+            console.log("WebSocket connection established.");
+        };
+
+        socket.onclose = function(e) {
+            console.log("WebSocket connection closed.");
+        };
+
+        // Function to update online users dropdown
+        function updateOnlineUsers(onlineUsers) {
+            const dropdown = document.getElementById('online-users-dropdown');
+            dropdown.innerHTML = '<option value="">Select an online user</option>';  // Clear previous options
+            onlineUsers.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.id;
+                option.textContent = user.username;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Example of online users data (This should come from your WebSocket or API)
+        const onlineUsers = [
+            { id: 1, username: 'user1' },
+            { id: 2, username: 'user2' },
+        ];
+        updateOnlineUsers(onlineUsers);
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+{% load static %}
+<header class="flex items-center justify-between bg-gray-800 h-20 px-8 text-white sticky top-0 z-40">
+    <div>
+        <a class="flex items-center gap-2" href="/">
+            <img class="h-6" src="{% static 'images/logo.svg' %}" alt="Logo"/>
+            <span class="text-lg font-bold">Real_time chat</span>
+        </a>
+    </div>
+    
+
+    <nav class="block relative">
+        <ul class="navitems flex items-center justify-center h-full">
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'home' %}">Home</a></li>
+            
+<!-- <html lang="en"> -->
+
+<!-- <body> -->
+    
+    
+    <!-- Dropdown for online users -->
+    <!-- <div class="container1 relative" >
+        <select type="search" id="online-users-dropdown">
+        </select>
+    </div> -->
+        <!-- Online users will be populated dynamically -->
+
+    <!-- WebSocket script -->
+    <!-- <script>
+        const roomName = "example_room";  // Set dynamically
+        const socket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+        );
+
+        // Handle WebSocket messages
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            if (data.message) {
+                console.log("Received message: ", data.message);
+            }
+        };
+
+        socket.onopen = function(e) {
+            console.log("WebSocket connection established.");
+        };
+
+        socket.onclose = function(e) {
+            console.log("WebSocket connection closed.");
+        };
+
+        // Function to update online users dropdown
+        function updateOnlineUsers(onlineUsers) {
+            const dropdown = document.getElementById('online-users-dropdown');
+            dropdown.innerHTML = '<option value="">Select an online user</option>';  // Clear previous options
+            onlineUsers.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.id;
+                option.textContent = user.username;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // Example of online users data (This should come from your WebSocket or API)
+        const onlineUsers = [
+            { id: 1, username: 'user1' },
+            { id: 2, username: 'user2' },
+            { id: 3, username: 'user3' },
+
+        ];
+        updateOnlineUsers(onlineUsers);
+    </script> -->
+<!-- </body> -->
+<!-- </html> -->
+            <li x-data="{ dropdownOpen: false }" class="relative">
+                <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">
+                    <img class="h-8 w-8 rounded-full object-cover" src="{{ request.user.profile.avatar }}" alt="Avatar" />
+                    {{ request.user.profile.name }}
+                    <img x-bind:class="dropdownOpen && 'rotate-180 duration-300'" class="w-4" src="https://img.icons8.com/small/32/ffffff/expand-arrow.png" alt="Dropdown" />
+                </a>
+                <div x-show="dropdownOpen" x-cloak class="absolute right-0 bg-white text-black shadow rounded-lg w-40 p-2 z-20"
+                x-transition:enter="duration-300 ease-out"
+                x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
+                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                >
+                    <ul class="hoverlist [&>li>a]:justify-end">
+                        <li><a href="{% url 'profile' %}">My Profile</a></li>
+                        <li><a href="{% url 'profile-edit' %}">Edit Profile</a></li>
+                       
+                        <li><a href="{% url 'new-groupchat' %}">Create Chat</a></li>
+                        <li><a href="{% url 'profile-settings' %}">Settings</a></li>
+                        <li><a href="{% url 'account_logout' %}">Log Out</a></li>
+                    </ul>
+                </div>
+            </li>
+            
+            {% else %}
+            <li><a href="{% url 'account_login' %}">Login</a></li>
+            <li><a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}">Signup</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
