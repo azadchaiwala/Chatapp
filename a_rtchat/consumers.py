@@ -14,6 +14,7 @@ class ChatroomConsumer(WebsocketConsumer):
 
         async_to_sync(self.channel_layer.group_add)(
             self.chatroom_name, self.channel_name
+            
         )
         #add and update online users
         if self.user not in self.chatroom.users_online.all():
